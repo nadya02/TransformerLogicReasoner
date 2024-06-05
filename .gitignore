@@ -1,0 +1,43 @@
+# Operating system generated files
+.DS_Store
+Thumbs.db
+
+# Java specifics
+*.class
+*/target/
+*.jar
+
+# Python environments
+*/myenv/
+*.pyc
+__pycache__/
+
+# Data directories
+*/data/
+
+# Logs
+*.log
+*.csv
+
+# Maven generated files
+*/log.txt
+
+# OWL ontologies and related files (uncomment if you do not want to track these)
+*/ontologies/
+*.owl
+*.rdf
+*.xml
+*.orig
+
+# WandB directory
+*/wandb/
+
+# IDE specific files
+.idea/
+*.iml
+
+# Compiled Python files
+*.pyo
+
+# Generated documentation
+/doc/
