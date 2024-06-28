@@ -34,7 +34,8 @@ public class ProofsFirst {
         String ontologyBaseName = ontologyFile.getName().replaceFirst("[.][^.]+$", "");
 
         // Create the result directory in the current working directory
-        String resultDirectory = Paths.get("D:/Uni/Year 3/Bachelor Thesis/Transformer/Autoregressive model ontology dataset/data", ontologyBaseName + "_proofs").toString();
+        String resultDirectory = Paths.get("D:/Uni/Year 3/Bachelor Thesis/LogicReasoner/Autoregressive model ontology dataset/data", ontologyBaseName + "_proofs").toString();
+        System.out.println(resultDirectory);
 
 //         Ensure the result directory exists
         Path resultPath = Paths.get(resultDirectory);
@@ -58,23 +59,17 @@ public class ProofsFirst {
 
         Set<OWLClass> classes = ontology.getClassesInSignature();
         List<OWLClass> classList = new ArrayList<>(classes);
-        int numberIterations = 500;
+        int numberIterations = 10000;
         //Seed the same??
         Random random = new Random(0); // set seed
         int duplicateAxiomsCount = 0;
         int proofsGenerated = 0;
+        int proofIndex = 0;
 
         for(int i = 0; i < numberIterations; i++){
-            // Get a random index from the range of the classes size
             int randomClassIndex = random.nextInt(classes.size());
 
-            // we get the random class that we are going to use as a parent node
             OWLClass childClass = classList.get(randomClassIndex);
-//            System.out.println(childClass);
-
-            //WHAT IS NODE SET AND HOW IS IT DIFFERENT FROM SET????
-            //In the documentation it says that it gives the union of the entities contained in the NOdes
-            // in this NodeSet, does that mean we get all direct subclasses in a Set of the given childClass??
             Set<OWLClass> superClassNodes = reasoner.getSuperClasses(childClass,false).getFlattened();
 
             if (superClassNodes.isEmpty())
@@ -99,8 +94,9 @@ public class ProofsFirst {
                         IProof<OWLAxiom> input = new Proof<>(axiom, Collections.singleton(inference));
 
                         // Save the proofs in the new directory named after the ontology
-                        JsonProofWriter.<OWLAxiom>getInstance().writeToFile(input, resultDirectory + "/Input" + i);
-                        JsonProofWriter.<OWLAxiom>getInstance().writeToFile(proof, resultDirectory + "/Proof" + i);
+                        JsonProofWriter.<OWLAxiom>getInstance().writeToFile(input, resultDirectory + "/Input" + proofIndex);
+                        JsonProofWriter.<OWLAxiom>getInstance().writeToFile(proof, resultDirectory + "/Proof" + proofIndex);
+                        proofIndex++;
                     } catch (ProofGenerationException ex){
                         System.out.println("A proof couldn't be found!");
                     } catch (IOException e) {
